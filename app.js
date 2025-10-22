@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 // Store io instance in app
 app.set('io', io);
 
-// ✅ ADDED: Root route for testing
+// ✅ Root route for testing
 app.get('/', (req, res) => {
   res.json({
     message: '🚀 Polling App Backend is Running!',
@@ -84,7 +84,12 @@ setupSocketHandlers(io);
 
 const PORT = process.env.PORT || 5000;
 
+// Track if server is already running
+let serverStarted = false;
+
 const startServer = async () => {
+  if (serverStarted) return;
+  
   try {
     await sequelize.authenticate();
     console.log('Database connection established successfully.');
@@ -94,6 +99,7 @@ const startServer = async () => {
 
     server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
+      serverStarted = true;
     });
   } catch (error) {
     console.error('Unable to start server:', error);
@@ -101,4 +107,16 @@ const startServer = async () => {
   }
 };
 
-startServer();
+
+module.exports = (req, res) => {
+  // Initialize database and start server on first request
+  if (!serverStarted) {
+    startServer().catch(console.error);
+  }
+  return app(req, res);
+};
+
+// ✅ For local development
+if (require.main === module) {
+  startServer();
+}
