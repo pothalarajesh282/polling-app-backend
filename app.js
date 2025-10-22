@@ -31,6 +31,34 @@ app.use(express.urlencoded({ extended: true }));
 // Store io instance in app
 app.set('io', io);
 
+// ✅ ADDED: Root route for testing
+app.get('/', (req, res) => {
+  res.json({
+    message: '🚀 Polling App Backend is Running!',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    endpoints: {
+      auth: {
+        register: 'POST /api/auth/register',
+        login: 'POST /api/auth/login',
+        profile: 'GET /api/auth/profile'
+      },
+      polls: {
+        getAll: 'GET /api/polls',
+        getById: 'GET /api/polls/:id',
+        create: 'POST /api/polls',
+        vote: 'POST /api/polls/:id/vote',
+        results: 'GET /api/polls/:id/results'
+      },
+      health: 'GET /api/health'
+    },
+    database: {
+      connected: true,
+      dialect: 'MySQL'
+    }
+  });
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/polls', pollRoutes);
