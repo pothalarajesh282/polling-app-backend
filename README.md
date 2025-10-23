@@ -4,8 +4,8 @@ Backend API for the Mini Polling Application built with Node.js, Express, MySQL,
 
 ## 🚀 Live Demo
 
-- **Backend API**: [Your Vercel Backend URL]
-- **Frontend**: [Your Vercel Frontend URL]
+- **Backend API**: https://polling-app-backend-ashen.vercel.app
+- **Frontend**: https://polling-app-frontend-eight.vercel.app
 
 ## 🛠 Tech Stack
 
